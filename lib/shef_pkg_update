@@ -1,0 +1,3 @@
+shef_pkg_update(){
+  throw this function not supported now!;
+}

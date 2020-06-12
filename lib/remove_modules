@@ -1,0 +1,4 @@
+remove_modules(){ 
+  silent getvar module_dir; 
+  rm -r ${INTERACTIVE_OPT:-} ${VERBOSE_OPT:-} ${FORCE_OPT:-} `getvar module_dir`; 
+}

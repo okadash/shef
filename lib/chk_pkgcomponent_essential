@@ -1,0 +1,4 @@
+chk_pkgcomponent_essential(){
+  test -d lib || throw library dir not found
+  test -f lib/manifest || throw manifest not found;
+}

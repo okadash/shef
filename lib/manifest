@@ -1,0 +1,9 @@
+# MANIFEST
+# shef
+
+SHELIB_MODULE_NAME=shef
+SHELIB_MODULE_VERSION=0.1.0
+SHELIB_MODULE_DESC="shelib module package manager"
+MODULE_AUTHER_NAME="Okadarien Saru"
+MODULE_AUTHER_EMAIL="okadas@dev.sysnk.net"
+MODULE_REPO_BASE="https://github.com/okadash/shef"

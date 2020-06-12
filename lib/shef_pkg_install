@@ -1,0 +1,18 @@
+shef_pkg_install(){
+  case $1 in  
+    -l|--local) :;; ## force to local mode
+    -*) throw unknwon option $1;;
+  esac
+  ## local mode
+  if test $# -eq 0 || test "$1" = -l; then
+    test $# -eq 0 || shift 
+    shef_localpkg_install $@; return ;
+  else
+  ## network mode
+    for i in $@ ; do 
+      chk_repo_destination $i && {
+        shef_fetchpkg $i && shef_localpkg_install
+      }
+    done
+  fi
+}
