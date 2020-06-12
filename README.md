@@ -10,6 +10,10 @@ Shef is the package manager for [shelib](https://github.com/okadash/shelib) func
 `shef search` not implemented now
 `shef remove pkgname` not implemented now
 
+# REQUIREMENT
+
+* `git` needed to download (clone) shelib modules repository
+* bash, dash, ksh or busybox sh. Unix-like systems recommended.
 
 # INSTALL
 run install.sh.
