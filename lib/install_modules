@@ -1,1 +1,3 @@
-install_modules(){ silent getvar module_dir; cp -a ${VERBOSE_OPT:- } ${FORCE_OPT:- }lib `getvar module_dir`;}
+install_modules(){ 
+  silent getvar module_dir; cp -a ${VERBOSE_OPT:- } ${FORCE_OPT:-} lib `getvar module_dir`;
+}
