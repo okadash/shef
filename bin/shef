@@ -10,6 +10,7 @@ loadmod(){
 loadenv(){
   : ${SHELIB_DIR:?SHELIB_DIR not set};
   SHELIB_REPO_ROOT=$SHELIB_DIR/../db
+  SHELIB_REPO_DB=$SHELIB_REPO_ROOT/packages.list
   test ! -d $SHELIB_REPO_ROOT && mkdir -vp $SHELIB_REPO_ROOT 
 }
 
@@ -19,7 +20,7 @@ parsecmds(){
   case $1 in 
     search) #pkgdesc
     ## search package with description
-    setexec shef_pkg_search ;;
+    setexec shef_pkg_search $2 ;;
 
     list)
     ## show installed package list
