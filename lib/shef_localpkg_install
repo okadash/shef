@@ -6,7 +6,7 @@ shef_localpkg_install(){
     setvar module_dir $SHELIB_DIR/${SHELIB_MODULE_NAME}
     silent getvar module_dir
     test -d "`getvar module_dir`" \
-      && { test -z "$FORCE_OPT" && askyn shelib module @${SHELIB_MODULE_NAME} already exist in `getvar module_dir`, overwrite?;} \
+      && { test ! -z "$FORCE_OPT" || askyn shelib module @${SHELIB_MODULE_NAME} already exist in `getvar module_dir`, overwrite?;} \
       && remove_modules \
       && install_modules ;
     test ! -d "`getvar module_dir`" && install_modules;
