@@ -1,0 +1,18 @@
+chk_repo_destination(){
+  case $1 in
+   @*) return 0;;
+   http://*) return 0;;
+   https://*) return 0;;
+   git://*) return 0;;
+   *) return 1;;
+  esac
+}
+
+set_repo_destination(){
+  : ${1:?set_repo_destination: argument needed}
+  chk_repo_destination $1
+  case $1 in
+    @*) shef_pkg_repo=`shef_pkg_search ${1#@} | head -2 | tail -1 | awk '{print $2}'` ;;
+    *) shef_pkg_repo=${1%/}
+  esac
+}

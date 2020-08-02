@@ -12,7 +12,7 @@ shef_pkg_install(){
   else
   ## network mode
     for i in $@ ; do 
-      chk_repo_destination $i && {
+      set_repo_destination $i && {
         shef_fetchpkg $i && shef_localpkg_install
       }
     done
