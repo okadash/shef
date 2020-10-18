@@ -3,120 +3,16 @@
 
 shef(){
 
+loadmod(){
+  require @shef
+}
+
 loadenv(){
   : ${SHELIB_DIR:?SHELIB_DIR not set};
   SHELIB_REPO_ROOT=$SHELIB_DIR/../db
+  SHELIB_REPO_DB=$SHELIB_REPO_ROOT/packages.list
   test ! -d $SHELIB_REPO_ROOT && mkdir -vp $SHELIB_REPO_ROOT 
 }
-
-shef_pkg_search(){ throw this function not supported now!; }
-
-# simply list shelib package directory
-shef_pkg_list(){ 
-  for i in ${SHELIB_DIR}/*; do
-    . $i/manifest; echo -e `basename $i`-${SHELIB_MODULE_VERSION:-nover}\\\t${SHELIB_MODULE_DESC:-no description}
-  done | tabfix
-}
-
-shef_pkg_info(){
-  for i in ${SHELIB_DIR}/*; do
-    test `basename $i` = "$1" && {
-      . $i/manifest || throw manifest file not found
-      echo -e Name\\\t\\\t`basename $i`
-      echo -e Version\\\t\\\t${SHELIB_MODULE_VERSION:-nover}
-      echo -e Auther\\\t\\\t${MODULE_AUTHER_NAME:-unknown auther} \<${MODULE_AUTHER_EMAIL:-unknown email}\> 
-      echo -e Description\\\t\\\t${SHELIB_MODULE_DESC:-no description}
-      echo -e Components\\\t\\\t`ls $i | grep -vE \^manifest\$`
-      echo -e Repository\\\t\\\t${MODULE_REPO_BASE:-no repo}
-      echo -e Requirement\\\t\\\tno info
-    } | tabfix | cut -c 1-72
-
-  done
-}
-
-chk_repo_destination(){
-  case $1 in
-   http://*) return 0;;
-   https://*) return 0;;
-   git://*) return 0;;
-   *) return 1;;
-  esac
-}
-shef_fetchpkg(){
-  shef_pkg_repo=${1%/}
-  shef_pkg_localrepo=$SHELIB_REPO_ROOT/${shef_pkg_repo##*/}
-  test -d $shef_pkg_localrepo && throw ${shef_pkg_repo##*/} already installed;
-  git clone \
-    ${shef_pkg_repo:?shef_pkg_repo not set} \
-    ${shef_pkg_localrepo:?shef_pkg_localrepo not set} || throw failed to fetch shef package
-  cd $shef_pkg_localrepo
-}
-
-shef_pkg_install(){
-  case $1 in  
-    -l|--local) :;; ## force to local mode
-    -*) throw unknwon option $1;;
-  esac
-  ## local mode
-  if test $# -eq 0 || test "$1" = -l; then
-    test $# -eq 0 || shift 
-    shef_localpkg_install $@; return ;
-  else
-  ## network mode
-    for i in $@ ; do 
-      chk_repo_destination $i && {
-        shef_fetchpkg $i && shef_localpkg_install
-      }
-    done
-  fi
-}
-
-shef_pkg_update(){
-  :;
-}
-
-shef_pkg_remove(){ throw this function not supported now!; }
-
-chk_pkgcomponent_essential(){
-  test -d lib || throw library dir not found
-  test -f lib/manifest || throw manifest not found;
-}
-
-remove_modules(){ 
-  silent getvar module_dir; 
-  rm -r ${INTERACTIVE_OPT:-} ${VERBOSE_OPT:-} ${FORCE_OPT:-} `getvar module_dir`; 
-}
-install_modules(){ silent getvar module_dir; cp -a ${VERBOSE_OPT:- } ${FORCE_OPT:- }lib `getvar module_dir`;}
-
-shef_localpkg_install(){
-    case $1 in 
-      -v) VERBOSE_OPT=-v ;;
-      -f) FORCE_OPT=-f ;;
-      -*) throw "unknown option for shef localinstall";;
-      *) :;;
-    esac
-    echo localinstall prompted...
-    chk_pkgcomponent_essential
-    . lib/manifest || throw manifest loading error
-    echo installing @${SHELIB_MODULE_NAME:?module name not set!}...;
-    setvar module_dir $SHELIB_DIR/${SHELIB_MODULE_NAME}
-    silent getvar module_dir
-    test -d "`getvar module_dir`" \
-      && askyn shelib module @${SHELIB_MODULE_NAME} already exist in `getvar module_dir`, overwrite? \
-      && remove_modules \
-      && install_modules ;
-    test ! -d "`getvar module_dir`" && install_modules;
-
-    echo installing bundled executables...;
-    test -d $SHELIB_DIR/../bin \
-      || throw shelib bindir corrupted, reinstall it \
-      && setvar bindir $SHELIB_DIR/../bin
-    test -d bin && for i in bin/*; do
-      cp ${VERBOSE_OPT} ${FORCE_OPT:- } -ai $i `getvar bindir`
-    done
-    echo @${SHELIB_MODULE_NAME:?module name not set!}-${SHELIB_MODULE_VERSION:-unknown} installed!
-}
-
 
 #SHELIB_SUBCOMMANDS
 
@@ -124,7 +20,7 @@ parsecmds(){
   case $1 in 
     search) #pkgdesc
     ## search package with description
-    setexec shef_pkg_search ;;
+    setexec shef_pkg_search $2 ;;
 
     list)
     ## show installed package list
@@ -148,8 +44,12 @@ parsecmds(){
     ## remove packege with name
     setexec shef_pkg_remove ;;
 
+    help) 
+    ## show this help
+    setexec showhelp --detail;;
+
     *)
-    setexec showhelp;;
+    setexec showhelp; unknown subcommand $1;;
   esac
 }
 #SHELIB_SUBCOMMANDS

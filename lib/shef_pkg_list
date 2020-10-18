@@ -1,6 +1,6 @@
 # simply list shelib package directory
 shef_pkg_list(){ 
   for i in ${SHELIB_DIR}/*; do
-    . $i/manifest; echo -e `basename $i`-${SHELIB_MODULE_VERSION:-nover}\\\t${SHELIB_MODULE_DESC:-no description}
-  done | tabfix
+    . $i/manifest; echo `basename $i`-${SHELIB_MODULE_VERSION:-nover}@@@${SHELIB_MODULE_DESC:-no description}
+  done | sed -r -e s/@@@/\\\t/g | tabfix
 }
