@@ -1,5 +1,5 @@
 shef_fetchpkg(){
-  shef_pkg_repo=${1%/}
+  : ${shef_pkg_repo:?shef_fetchpkg: shef_pkg_repo not set, abort!};
   shef_pkg_localrepo=$SHELIB_REPO_ROOT/${shef_pkg_repo##*/}
   test -d $shef_pkg_localrepo && throw ${shef_pkg_repo##*/} already installed;
   git clone \

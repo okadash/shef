@@ -1,6 +1,6 @@
 shef_pkg_search(){ 
   : ${1:?shef_pkg_search: argument needed!}
-  cat $SHELIB_REPO_DB | grep $1 > /dev/null || { echo no packages found; exit;}
+  cat $SHELIB_REPO_DB | grep $1 > /dev/null || { echo no packages found >&2; exit;}
   { 
     echo NAME REPOSITORY
     cat $SHELIB_REPO_DB | grep -E $1 

@@ -1,8 +1,0 @@
-chk_repo_destination(){
-  case $1 in
-   http://*) return 0;;
-   https://*) return 0;;
-   git://*) return 0;;
-   *) return 1;;
-  esac
-}
