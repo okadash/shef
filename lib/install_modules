@@ -1,3 +1,8 @@
 install_modules(){ 
-  silent getvar module_dir; cp -a ${VERBOSE_OPT:- } ${FORCE_OPT:-} lib `getvar module_dir`;
+  silent getvar module_dir; 
+  if test "$DEV_MODE" = "1"; then
+    ln -sf ${VERBOSE_OPT} ${FORCE_OPT} $PWD/lib `getvar module_dir`;
+  else 
+    cp -a ${VERBOSE_OPT} ${FORCE_OPT} lib `getvar module_dir`;
+  fi
 }
