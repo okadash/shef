@@ -16,7 +16,11 @@ shef_localpkg_install(){
       || throw shelib bindir corrupted, reinstall it \
       && setvar bindir ${SHELIB_DIR}/../bin
     test -d bin && for i in bin/*; do
-      cp ${VERBOSE_OPT} ${FORCE_OPT:--i} -a $i `getvar bindir`
+      if test "$DEV_MODE" = "1"; then
+        ln -s ${VERBOSE_OPT} ${FORCE_OPT} $PWD/$i `getvar bindir`;
+      else
+        cp ${VERBOSE_OPT} ${FORCE_OPT:--i} -a $i `getvar bindir`
+      fi
     done
     echo @${SHELIB_MODULE_NAME:?module name not set!}-${SHELIB_MODULE_VERSION:-unknown} installed!
 }

@@ -8,6 +8,7 @@ loadmod(){
 }
 
 loadenv(){
+  unset SHELIB_MODULE_NAME
   : ${SHELIB_DIR:?SHELIB_DIR not set};
   SHELIB_REPO_ROOT=$SHELIB_DIR/../db
   SHELIB_REPO_DB=$SHELIB_REPO_ROOT/packages.list

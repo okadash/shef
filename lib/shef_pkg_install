@@ -1,10 +1,14 @@
 shef_pkg_install(){
-  case $1 in  
-    -y|--yes) FORCE_OPT=-f;; ## non-interactive install 
-    -f|--force) FORCE_OPT=-f;; ## non-interactive install (same to -y)
-    -v|--verbose) VERBOSE_OPT=-v;; ## verbose install 
-    -*) throw unknwon option $1;;
-  esac
+  while :; do
+    case $1 in  
+      -y|--yes) FORCE_OPT=-f; shift;; ## non-interactive install 
+      -f|--force) FORCE_OPT=-f; shift;; ## non-interactive install (same to -y)
+      --dev) DEV_MODE=1; shift;; ## developer mode for git cvs locating
+      -v|--verbose) VERBOSE_OPT=-v; shift;; ## verbose install 
+      -*) throw unknwon option $1;;
+      *) break;;
+    esac
+  done
   ## local mode
   if test $# -eq 0 || test ! -z "${FORCE_OPT}${VERBOSE_OPT}"; then
     test $# -eq 0 || shift 
