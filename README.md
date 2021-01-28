@@ -1,6 +1,6 @@
 # DEPRECATED
 
-Contents on this repo has been merged into [shelib @core](https://github.com/okadash/shelib).
+Contents on this repo have been merged into [shelib @core](https://github.com/okadash/shelib).
 Please refer the [repository](https://github.com/okadash/shelib).
 
 
