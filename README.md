@@ -1,4 +1,9 @@
-# ABOUT
+# DEPRECATED
+
+Contents on this repo has been merged into [shelib @core](https://github.com/okadash/shelib).
+Please refer the [repository](https://github.com/okadash/shelib).
+
+
 Shef is the package manager for [shelib](https://github.com/okadash/shelib) functions. Any function can be downloaded and installed under ~/.shef.
 
 # USAGE
